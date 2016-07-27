@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Wish list - login/register</title>
+	{% load staticfiles %}
+    <script src="{% static 'users/js/jquery.js' %}"></script>
+    <script src="{% static 'users/js/bootstrap.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'users/css/bootstrap.css' %}">
+    <script src="{% static 'users/js/jqueryui.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'users/css/jqueryui.css' %}">
+    <link rel="stylesheet" href="{% static 'users/css/styles.css' %}">
+    <link rel="stylesheet" href="{% static 'users/css/index.css' %}">
+    <script src="{% static 'users/js/main.js' %}"></script>
+</head>
+<body>
+<div class="bg"></div>
+<nav class="navbar navbar-inverse radius">
+  <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="#">Wish-list</a>
+    </div>
+	
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+        <li><a href="{%url 'wish_list'%}">Home</a></li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="#">Sign in</a></li>
+      </ul>
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</nav>
+<div class="container flexWrap">
+	<form action="{% url 'login' %}" class="flexItem" method="POST">
+	{% csrf_token %}
+		<div class="form-group">
+			<label for="lg_username">Username: </label>
+			<input type="text" name="username" id="lg_username" placeholder="Username">
+			{% if msg.username %}
+			<p class="errMsg">{{msg.username}}</p>
+			{% endif %}
+			{% if msg.notExist %}
+			<p class="errMsg">{{msg.notExist}}</p>
+			{% endif %}
+		</div>
+		<div class="form-group">
+			<label for="lg_password">Password: </label> 
+			<input type="password" name="password" id="lg_password" placeholder="Password">
+			{% if msg.password %}
+			<p class="errMsg">{{msg.password}}</p>
+			{% endif %}
+			{% if msg.pwErr %}
+			<p class="errMsg">{{msg.pwErr}}</p>
+			{% endif %}
+		</div>
+		<p><input class="btn btn-info" type="submit" value="Log in"></p>
+	</form>
+	<form action="{% url 'register' %}" class="flexItem" method="POST">
+	{% csrf_token %}
+		<div class="form-group">
+			<label for="reg_name">Name: </label>
+			<input type="text" name="name" id="reg_name" placeholder="Name">
+			{% if msg.name %}
+			<p class="errMsg">{{msg.name}}</p>
+			{% endif %}
+		</div>
+		<div class="form-group">
+			<label for="reg_username">Username: </label>
+			<input type="text" name="username" id="reg_username" placeholder="Username">
+			{% if msg.username %}
+			<p class="errMsg">{{msg.username}}</p>
+			{% endif %}
+			{% if msg.exist %}
+			<p class="errMsg">{{msg.exist}}</p>
+			{% endif %}
+		</div>
+		<div class="form-group">
+			<label for="regPassword">Password: </label>
+			<input id="regPassword" type="password" name="password" placeholder="Password">
+			{% if msg.password %}
+			<p class="errMsg">{{msg.password}}</p>
+			{% endif %}
+		</div>
+		<div class="form-group">
+			<label for="regPasswordConf">Confirm password: </label>
+			<input id="regPasswordConf" type="password" name="confirm_password" placeholder="Confirm password">
+		</div>
+		<div class="form-group">
+			<label for="datepicker">Date Hired: (why is this here?)</label>
+			<input type="text" id="datepicker">
+		</div>
+		<input id="regSubmit" class="btn btn-info" type="submit" value="Register">
+	</form>
+</div>
+</body>
+</html>

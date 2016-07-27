@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Wish-list dashboard</title>
+	{% load staticfiles %}
+    <script src="{% static 'wish_list/js/jquery.js' %}"></script>
+    <script src="{% static 'wish_list/js/bootstrap.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'wish_list/css/bootstrap.css' %}">
+    <script src="{% static 'wish_list/js/jqueryui.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'wish_list/css/jqueryui.css' %}">
+    <link rel="stylesheet" href="{% static 'wish_list/css/styles.css' %}">
+    <script src="{% static 'wish_list/js/main.js' %}"></script>
+</head>
+<body>
+	<div class="dashboardbg"></div>
+	<nav class="navbar navbar-inverse radius">
+	  <div class="container-fluid">
+	    <!-- Brand and toggle get grouped for better mobile display -->
+	    <div class="navbar-header">
+	      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+	        <span class="sr-only">Toggle navigation</span>
+	        <span class="icon-bar"></span>
+	        <span class="icon-bar"></span>
+	        <span class="icon-bar"></span>
+	      </button>
+	      <a class="navbar-brand" href="#">Wish-list</a>
+	    </div>
+		
+	    <!-- Collect the nav links, forms, and other content for toggling -->
+	    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+	      <ul class="nav navbar-nav">
+	        <li><a href="{%url 'wish_list'%}">Home</a></li>
+	      </ul>
+	      <ul class="nav navbar-nav navbar-right">
+	        <li><a href="#">{{request.session.name}}</a></li>
+	        <li><a href="{% url 'logout' %}">Log out</a></li>
+	      </ul>
+	    </div><!-- /.navbar-collapse -->
+	  </div><!-- /.container-fluid -->
+	</nav>
+<div class="container">
+	<p class="btn btn-warning"><a href="{% url 'new_wish' %}">Add wish-list item</a></p>
+	<table class="table table-striped self_wl">
+	<caption>Your Wish List</caption>
+	{% if self_wl_items %}
+		<tr>
+			<th>Item</th>
+			<th>Added by</th>
+			<th>Date Added</th>
+			<th>Action</th>
+		</tr>
+		{% for item in self_wl_items %}
+		<tr>
+			<td><a href="{% url 'show_item' item.id %}">{{item.name}}</a></td>
+			<td>{{item.creator.name}}</td>
+			<td>{{item.created_at}}</td>
+			<td>
+			{% if item.creator.id == request.session.user_id %}
+			<a href="{% url 'delete' item.id %}">Delete</a>
+			{% endif %}
+			{% if item.creator.id != request.session.user_id %}
+			<a href="{% url 'remove_from_mine' item.id %}">Remove from my Wishlist</a>
+			{% endif %}
+			</td>
+		</tr>
+		{% endfor %}
+	{% endif %}
+	{% if not self_wl_items %}
+	<tr><td>Start adding items to your wish list today!</td></tr>
+	{% endif %}
+	</table>
+	<hr>
+	<table class="table table-striped other_wl">
+	<caption>Other people's Wish List</caption>
+	{% if other_wl_items %}
+		<tr>
+			<th>Item</th>
+			<th>Added by</th>
+			<th>Date Added</th>
+			<th>Action</th>
+		</tr>
+		{% for item in other_wl_items %}
+		<tr>
+			<td><a href="{% url 'show_item' item.id %}">{{item.name}}</a></td>
+			<td>{{item.creator.name}}</td>
+			<td>{{item.created_at}}</td>
+			<td><a href="{% url 'add_to_mine' item.id %}">Add to my Wishlist</a></td>
+		</tr>
+		{% endfor %}
+	{% endif %}
+	{% if not other_wl_items %}
+	<tr><td>Oops! No one else told us their wish list yet...</td></tr>
+	{% endif %}
+	</table>
+</div>
+</body>
+</html>

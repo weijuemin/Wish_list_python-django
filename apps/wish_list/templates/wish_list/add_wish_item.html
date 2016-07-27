@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Wish list - login/register</title>
+	{% load staticfiles %}
+    <script src="{% static 'wish_list/js/jquery.js' %}"></script>
+    <script src="{% static 'wish_list/js/bootstrap.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'wish_list/css/bootstrap.css' %}">
+    <script src="{% static 'wish_list/js/jqueryui.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'wish_list/css/jqueryui.css' %}">
+    <link rel="stylesheet" href="{% static 'wish_list/css/styles.css' %}">
+    <script src="{% static 'wish_list/js/main.js' %}"></script>
+</head>
+<body>
+<div class="dashboardbg"></div>
+<nav class="navbar navbar-inverse radius">
+  <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="#">Wish-list</a>
+    </div>
+	
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+        <li><a href="{%url 'wish_list'%}">Home</a></li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="#">{{request.session.name}}</a></li>
+        <li><a href="{% url 'logout' %}">Log out</a></li>
+      </ul>
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</nav>
+<div class="container">
+	<form action="{% url 'create_wish' %}" method="POST">
+	{% csrf_token %}
+	<caption>Create a new wish list item</caption><hr>
+	<div class="form-group">
+		<label for="newItem">Item/Product:</label>
+		<input type="text" class="form-control" name="item_name"><br>
+		{% if msg.item_name %}
+		<p class="errMsg">{{ msg.item_name }}</p>
+		{% endif %}
+		<input type="submit" class="btn btn-primary" value="Add">
+	</div>
+	</form>
+</div>
+</body>
+</html>
